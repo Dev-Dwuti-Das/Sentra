@@ -50,12 +50,12 @@ function Navbar() {
               </a>
             </li>
             <li className="nav-item mx-2">
-              <a className="nav-link text-white" href="#">
+              <a className="nav-link text-white" href="http://localhost:3000/pricing">
                 Pricing
               </a>
             </li>
             <li className="nav-item mx-2">
-              <a className="nav-link text-white" href="#">
+              <a className="nav-link text-white" href="http://localhost:3000/support">
                 Support
               </a>
             </li>

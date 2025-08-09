@@ -4,8 +4,8 @@ import woman from "../Media/women.png";
 function Sign_Up_form() {
   return (
     <div>
-      <h1 className="d-flex justify-content-center mt-5 mb-3"> Sign up</h1>
-      <div className="row">
+      <h1 className="d-flex justify-content-center mt-5 mb-2"> Sign up</h1>
+      <div className="row mb-5">
         <div className="col m-5">
           <img src={woman} className="ps-5 img-fluid"></img>
         </div>
