@@ -10,12 +10,11 @@ import Open_Account from '../Open_Account';
 function Ahomewrap() {
     return ( 
         <>
-        <Navbar></Navbar>
         <Hero></Hero>
         <Education></Education>
         <Pricing></Pricing>
+        <Product/>
         <Open_Account/>    
-        <Footer></Footer>
         </>
      );
 }

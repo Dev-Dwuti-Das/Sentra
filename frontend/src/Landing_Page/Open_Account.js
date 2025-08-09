@@ -3,7 +3,7 @@ import man from "./Media/man.png";
 function open_Account() {
   return (
     <>
-      <img src={man}></img>
+      {/* <img src={man}></img> */}
       <div className="open_account w-50 mx-auto mb-5 ">
         <h1 className="d-flex justify-content-center">Open a Sentra account</h1>
         <p className="p-3">

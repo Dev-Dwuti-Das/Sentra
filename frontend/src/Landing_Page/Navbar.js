@@ -34,24 +34,19 @@ function Navbar() {
               <a
                 className="nav-link active text-white"
                 aria-current="page"
-                href="#"
+                href="http://localhost:3000/"
               >
                 Home
               </a>
             </li>
             <li className="nav-item mx-2">
-              <a className="nav-link text-white" href="#">
+              <a className="nav-link text-white" href="http://localhost:3000/signup">
                 Sign up
               </a>
             </li>
             <li className="nav-item mx-2">
-              <a className="nav-link text-white" href="#">
+              <a className="nav-link text-white" href="http://localhost:3000/about">
                 About
-              </a>
-            </li>
-            <li className="nav-item mx-2">
-              <a className="nav-link text-white" href="#">
-                Products
               </a>
             </li>
             <li className="nav-item mx-2">
