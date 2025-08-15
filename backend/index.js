@@ -6,7 +6,12 @@ const position = require("../backend/model/positions")
 const app = express()
 const URL = process.env.DB_URL;
 const Port = process.env.port || 3002;
+const cors = require("cors");
+const bodyparser = require("body-parser");
 
+app.use(cors());
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
