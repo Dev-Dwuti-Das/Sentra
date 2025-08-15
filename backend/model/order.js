@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const order_Schema = new Schema({
@@ -8,4 +8,4 @@ const order_Schema = new Schema({
   mode:String,
 });
 
-module.exports = mongoose.model('holding', holding_Schema);  
+module.exports = mongoose.model("Order", order_Schema);
