@@ -40,11 +40,6 @@ function Navbar() {
               </a>
             </li>
             <li className="nav-item mx-2">
-              <a className="nav-link text-white" href="http://localhost:3000/signup">
-                Sign up
-              </a>
-            </li>
-            <li className="nav-item mx-2">
               <a className="nav-link text-white" href="http://localhost:3000/about">
                 About
               </a>
@@ -58,6 +53,17 @@ function Navbar() {
               <a className="nav-link text-white" href="http://localhost:3000/support">
                 Support
               </a>
+            </li>
+            <li className="nav-item mx-2">
+              <div class="dropdown">
+                <button class="btn btn-primary rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Get Stated
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item text-white" href="http://localhost:3000/signup">Sign up</a></li>
+                  <li><a class="dropdown-item text-white" href="http://localhost:3000/login">Login</a></li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>

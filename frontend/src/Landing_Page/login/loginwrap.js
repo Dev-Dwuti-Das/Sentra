@@ -1,37 +1,20 @@
-import React from "react";
+
+import React from 'react'
 import woman from "../Media/women.png";
 
-function Sign_Up_form() {
-  return (
-    <div>
-      <h1 className="d-flex justify-content-center mt-5 mb-2"> Sign up</h1>
+function Login_wrap() {
+    return ( 
+        <div>
+      <h1 className="d-flex justify-content-center mt-5 mb-2">Login </h1>
       <div className="row mb-5">
         <div className="col m-5">
           <img src={woman} className="ps-5 img-fluid"></img>
         </div>
-        <form class="col-8 g-3 signupform px-5 mt-5" action={'http://localhost:3002/signup'} method='post'>
+        <form class="col-8 g-3 signupform px-5 mt-5" action={'http://localhost:3002/login'} method='post'>
             <div className="row">
-          <div class="col-md-6 col-sm-4 offset-1">
-            <label for="name" class="form-label" >
-              Full Name
-            </label>
-            <input type="text" class="form-control" id="name" placeholder="dev dwuti" name="name"></input>
-          </div>
-          <div class="col-md-3 col-sm-1">
-            <label for="Mobile" class="form-label">
-              Mobile No.
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              id="mobile"
-              placeholder="+91"
-              name="mobile"
-            ></input>
-          </div>
-          <div class="col-md-9 offset-1">
+          <div class="col-md-6 offset-3">
             <label for="email" class="form-label">
-             email
+             Email
             </label>
             <input
               type="email"
@@ -41,9 +24,9 @@ function Sign_Up_form() {
               name="email"
             ></input>
           </div>
-          <div class="col-md-9 offset-1">
+          <div class="col-md-6 offset-3 mt-1">
             <label for="password" class="form-label">
-              password
+              Password
             </label>
             <input
               type="password"
@@ -77,7 +60,7 @@ function Sign_Up_form() {
         </form>
       </div>
     </div>
-  );
+     );
 }
 
-export default Sign_Up_form;
+export default Login_wrap;
