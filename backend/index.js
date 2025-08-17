@@ -13,32 +13,91 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bodyparser = require("body-parser");
+const finhub = require("finnhub");
+const finhubClient = new finhub.DefaultApi(process.env.FINHUB_API_kEY);
 
-
-
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3001", // allow only your React app
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // allow cookies/auth headers if needed
+  })
+);
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url, "Body:", req.body);
   next();
 });
+const symbols = [
+  "AAPL",
+  "MSFT",
+  "AMZN",
+  "GOOGL",
+  "GOOG",
+  "META",
+  "TSLA",
+  "NVDA",
+  "BRK.B",
+  "JNJ",
+  "JPM",
+  "V",
+  "MA",
+  "DIS",
+  "NFLX",
+  "ADBE",
+  "INTC",
+  "AMD",
+  "CSCO",
+  "ORCL",
+  "PYPL",
+  "CRM",
+  "IBM",
+  "PEP",
+  "KO",
+  "MCD",
+  "SBUX",
+  "WMT",
+  "XOM",
+  "PFE",
+];
 
-// app.use(
-//   session({
-//     secret: "xenon",
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { maxAge: 1000 * 60 * 60 * 24 },
-//   })
-// );
+app.get("/APItest", async (req, res) => {
+  let results = [];         
+  let company_details = []; 
+  let completed = 0;
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({
-    origin: "http://localhost:3001", 
-    credentials: true,              
-  }));
-app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
+  symbols.forEach((symbol) => {
+      finhubClient.quote(symbol, (error, data, response) => {
+      if (!error) {
+        results.push({ symbol, ...data });
+      } else {
+        console.log("Error fetching quote for", symbol, error);
+      }
+      checkIfDone();
+    });
+
+    finhubClient.companyProfile2({ symbol }, (error, data, response) => {
+      if (!error) {
+        company_details.push({ symbol, ...data });
+      } else {
+        console.log("Error fetching profile for", symbol, error);
+      }
+      checkIfDone();
+    });
+  });
+
+  function checkIfDone() {
+    completed++;
+    if (completed === symbols.length * 2) {
+      res.json({ quotes: results, profiles: company_details });
+    }
+  }
+});
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -50,13 +109,13 @@ app.get("/holdingfetch", async (req, res) => {
 });
 
 app.post("/sellstock", async (req, res) => {
-  console.log("route hit ")
+  console.log("route hit ");
   try {
     const { name, qty } = req.body;
     const sellQty = Number(qty);
     console.log("Sell Qty:", sellQty, "Type:", typeof sellQty);
 
-    const holding_data = await holding.findOne({ name:req.body.name });
+    const holding_data = await holding.findOne({ name: req.body.name });
     console.log("Holding:", holding_data);
 
     if (!holding_data) {
@@ -71,10 +130,16 @@ app.post("/sellstock", async (req, res) => {
 
     if (holding_data.qty === 0) {
       await holding.deleteOne({ name });
-      return res.json({ message: "Stock completely sold and removed", holding: null });
+      return res.json({
+        message: "Stock completely sold and removed",
+        holding: null,
+      });
     } else {
       await holding_data.save();
-      return res.json({ message: "Stock sold successfully", holding: holding_data });
+      return res.json({
+        message: "Stock sold successfully",
+        holding: holding_data,
+      });
     }
   } catch (err) {
     console.error(err);
@@ -110,7 +175,7 @@ app.get("/orderfetch", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-    const existingUser = await account.findOne({ email:req.body.email});
+    const existingUser = await account.findOne({ email: req.body.email });
     if (existingUser) {
       return res.json({ message: "User already exists" });
     }
@@ -120,7 +185,6 @@ app.post("/signup", async (req, res) => {
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, 5),
     });
-    ;
     await newuser.save();
     res.redirect("http://localhost:3001/dashboard");
   } catch (err) {
@@ -129,6 +193,8 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.get("/market", async (req, res) => {});
+
 app.post("/login", async (req, res) => {
   try {
     const user = await account.findOne({ email: req.body.email });
@@ -136,10 +202,17 @@ app.post("/login", async (req, res) => {
 
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) return res.json({ error: "Invalid password" });
-    const token = jwt.sign({ id: user._id, name:user.name }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { id: user._id, name: user.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
     console.log(user.name);
-    res.cookie("token", token, { httpOnly: true ,maxAge: 7 * 24 * 60 * 60 * 1000,});
-    res.redirect("http://localhost:3001/dashboard"); 
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.redirect("http://localhost:3001/dashboard");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
