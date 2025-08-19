@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: aliceblue;
+  background-color: rgb(13,13,13);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.widget{
+  background-color: rgb(23, 23, 23);
+  padding: 20px;
+  padding-bottom: 31px;
+  border-radius: 25px;
+}
+
+.profit{
+  color:rgb(92, 211, 92)
+}
+.loss{
+  color: rgb(255, 95, 95);
+}
+.neutral {
+  color: gray;
+}
+
+.fav-button{
+  font-size: small;
+  color:white;
+  font-weight: 600;
+  background-color: rgb(41, 41, 41);
+}
+
+
+.clickfav {
+  padding: 0.1rem; /* give hover space */
+  cursor: pointer;
+}
+
+.clickfav:hover {
+  border-radius: 35px;
+  background-color: rgb(41, 41, 41);
+  color: white; /* so text stays readable */
+}
+/* .clicked{
+  background-color: aqua;
+} */
+
+
+/* .chart-container {
+  display: flex;
+  gap: 50px
+} */
+
+/* * {
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+  margin: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */

@@ -1,0 +1,60 @@
+{
+  "quotes": [
+    {
+      "symbol": "MSFT",
+      "c": 520.17,
+      "d": -2.31,
+      "dp": -0.4421,
+      "h": 526.1,
+      "l": 519.08,
+      "o": 522.77,
+      "pc": 522.48,
+      "t": 1755288000
+    },
+    {
+      "symbol": "AAPL",
+      "c": 231.59,
+      "d": -1.19,
+      "dp": -0.5112,
+      "h": 234.28,
+      "l": 229.335,
+      "o": 234,
+      "pc": 232.78,
+      "t": 1755288000
+    }
+  ],
+  "profiles": [
+    {
+      "symbol": "MSFT",
+      "country": "US",
+      "currency": "USD",
+      "estimateCurrency": "USD",
+      "exchange": "NASDAQ NMS - GLOBAL MARKET",
+      "finnhubIndustry": "Technology",
+      "ipo": "1986-03-13",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/MSFT.png",
+      "marketCapitalization": 3866510.16,
+      "name": "Microsoft Corp",
+      "phone": "14258828080",
+      "shareOutstanding": 7433.17,
+      "ticker": "MSFT",
+      "weburl": "https://www.microsoft.com/en-in/"
+    },
+    {
+      "symbol": "AAPL",
+      "country": "US",
+      "currency": "USD",
+      "estimateCurrency": "USD",
+      "exchange": "NASDAQ NMS - GLOBAL MARKET",
+      "finnhubIndustry": "Technology",
+      "ipo": "1980-12-12",
+      "logo": "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png",
+      "marketCapitalization": 3436885.92,
+      "name": "Apple Inc",
+      "phone": "14089961010",
+      "shareOutstanding": 14840.39,
+      "ticker": "AAPL",
+      "weburl": "https://www.apple.com/"
+    }
+  ]
+}
