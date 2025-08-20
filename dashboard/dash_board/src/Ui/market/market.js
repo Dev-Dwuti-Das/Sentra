@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CachedIcon from '@mui/icons-material/Cached';
+import CachedIcon from "@mui/icons-material/Cached";
 
 function Marketwrap() {
   const [Market, setMarket] = useState([]);
+  const [hoveredId, setHoveredId] = useState(null);
+  function handle_mouse_enter(id) {
+    setHoveredId(id);
+    console.log("entered")
+    console.log(hoveredId);
+  }
 
+  function handle_mouse_exit() {
+    setHoveredId(null);
+  }
   const MAX_LEN = "Berkshire Hathaway".length;
 
   useEffect(() => {
@@ -31,9 +40,9 @@ function Marketwrap() {
 
   return (
     <>
-    <div className="d-flex">
-      <h3 className="ms-3 fw-2">Market</h3>
-      {/* <button className="btn m-0 p-0"><CachedIcon className="opacity-75"></CachedIcon></button> */}
+      <div className="d-flex">
+        <h3 className="ms-3 fw-2">Market</h3>
+        {/* <button className="btn m-0 p-0"><CachedIcon className="opacity-75"></CachedIcon></button> */}
       </div>
       <div className="widget pt-3 mx-1">
         <div className="row fw-bold ms-4 px-3">
@@ -47,14 +56,9 @@ function Marketwrap() {
         <hr className="my-2" />
 
         {Market.filter(
-          (ele) =>
-            ele.name &&
-            ele.c &&
-            ele.h &&
-            ele.logo &&
-            ele.l
+          (ele) => ele.name && ele.c && ele.h && ele.logo && ele.l
         ).map((ele, idx) => (
-          <div className="row px-3" key={idx}>
+          <div className="row px-3" onMouseEnter={() => handle_mouse_enter(ele.name)} onMouseLeave={handle_mouse_exit} key={idx}>
             {ele.logo ? (
               <img
                 className="p-0 d-flex justify-content-center align-item-center my-2"
@@ -93,6 +97,11 @@ function Marketwrap() {
             <div className="col my-2 d-flex justify-content-center">
               {formatField(ele.l)}
             </div>
+            {hoveredId === ele.name && (
+            <div className="col my-2 d-flex justify-content-center">
+              <button type="button" className=" btn buybtn px-2 rounded-pill mx-1">Buy</button>
+              <button  className="btn sellbtn px-2 rounded-pill mx-1">Sell</button>
+            </div>)}
           </div>
         ))}
       </div>
