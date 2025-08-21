@@ -99,8 +99,7 @@ function Marketwrap() {
             </div>
             {hoveredId === ele.name && (
             <div className="col my-2 d-flex justify-content-center">
-              <button type="button" className=" btn buybtn px-2 rounded-pill mx-1">Buy</button>
-              <button  className="btn sellbtn px-2 rounded-pill mx-1">Sell</button>
+              
             </div>)}
           </div>
         ))}
