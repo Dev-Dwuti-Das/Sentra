@@ -14,6 +14,8 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bodyparser = require("body-parser");
 const finhub = require("finnhub");
+const sendOTP = require("../frontend/src/Landing_Page/Sign_Up/Otp")
+const { default: sendOTP } = require("../frontend/src/Landing_Page/Sign_Up/Otp");
 const finhubClient = new finhub.DefaultApi(process.env.FINHUB_API_kEY);
 
 app.use(express.json());
@@ -192,6 +194,12 @@ app.post("/signup", async (req, res) => {
     res.json({ error: "Something went wrong" });
   }
 });
+
+app.post("/getotp" ,async(req,res)=>{
+  let email = "devdwuti@gmail.com";
+  sendOTP(email);
+  res.json({ message: "OTP sent to email" });
+})
 
 app.get("/market", async (req, res) => {});
 
