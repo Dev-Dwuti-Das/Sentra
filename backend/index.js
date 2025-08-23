@@ -216,9 +216,18 @@ app.post("/signup", async (req, res) => {
       return res.json({ message: "User already exists" });
     }
     await sendOTP(req, req.body.email);
-    const { otp } = req.body; //input from user
-    console.log(req.session.otp,"session.otp");
-    if (otp === req.session.otp) { //fasle ho ja rha h 
+    res.json({ success: true, message: "OTP sent to email" });
+  } catch (err) {
+    console.error(err);
+    res.json({ error: "Something went wrong" });
+  }
+});
+
+app.post("/verifyotp", async(req,res)=>{
+  console.log("verifying....")
+  const { otp } = req.body; //input from user
+  console.log(req.session.otp);
+   if (otp === req.session.otp) { //fasle ho ja rha h 
           let newuser = new account({
       name: req.body.name,
       mobile: req.body.mobile,
@@ -230,13 +239,8 @@ app.post("/signup", async (req, res) => {
     } else {
       res.status(400).json({ success: false, message: "Invalid OTP ❌" });
     }
-  } catch (err) {
-    console.error(err);
-    res.json({ error: "Something went wrong" });
-  }
-});
 
-app.post("/verifyotp")
+})
 
 app.get("/market", async (req, res) => {});
 

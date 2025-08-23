@@ -3,28 +3,35 @@ import woman from "../Media/women.png";
 import { useState } from "react";
 
 function Sign_Up_form() {
-  const [isbtncliked, Setisbtncliked] = useState(true);
+  const [isbtncliked, Setisbtncliked] = useState(true); // use boolean not string
+
   async function handleSubmit(e) {
-    e.preventDefault(); 
+    e.preventDefault(); // stop browser from reloading
     console.log("Submitting signup form...");
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
 
+    // send to backend
     const res = await fetch("http://localhost:3002/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
+    console.log(res);
+
     const result = await res.json();
     console.log(result);
 
-    Setisbtncliked(false);
+    if (result.success) {
+      Setisbtncliked(false);
+    } else {
+      alert("signup failed");
+    }
   }
+
   return (
-    
     <>
       <div>
         <h1 className="d-flex justify-content-center mt-5 mb-2">Sign up</h1>
@@ -104,9 +111,29 @@ function Sign_Up_form() {
           ) : (
             <form
               className="col-8 g-3 signupform px-5 mt-5"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 console.log("OTP submitted");
+
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                  const res = await fetch("http://localhost:3002/verifyotp", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data), 
+                    credentials: "include", 
+                  });
+
+                  const result = await res.json();
+                  console.log("Verify OTP result:", result);
+                } catch (err) {
+                  console.error("Error verifying OTP:", err);
+                  alert("Something went wrong verifying OTP");
+                }
               }}
             >
               <div className="col-6 offset-3">
@@ -114,7 +141,7 @@ function Sign_Up_form() {
                   Otp
                 </label>
                 <input
-                  type="number"
+                  type="string"
                   className="form-control"
                   id="otp"
                   placeholder="Otp"
@@ -137,7 +164,5 @@ function Sign_Up_form() {
     </>
   );
 }
-
-
 
 export default Sign_Up_form;
