@@ -7,6 +7,7 @@ const position = require("../backend/model/positions");
 const order = require("../backend/model/order");
 const account = require("../backend/model/account");
 const app = express();
+const session = require("express-session");
 const URL = process.env.DB_URL;
 const Port = process.env.port || 3002;
 const cors = require("cors");
@@ -14,15 +15,22 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bodyparser = require("body-parser");
 const finhub = require("finnhub");
-const sendOTP = require("../frontend/src/Landing_Page/Sign_Up/Otp")
-const { default: sendOTP } = require("../frontend/src/Landing_Page/Sign_Up/Otp");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+const send = require("process");
 const finhubClient = new finhub.DefaultApi(process.env.FINHUB_API_kEY);
 
+app.use(session({
+  secret: "secret_key",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } 
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3001", // allow only your React app
+    origin: ["http://localhost:3001", "http://localhost:3000"], // allow only your React app
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // allow cookies/auth headers if needed
   })
@@ -68,12 +76,12 @@ const symbols = [
 ];
 
 app.get("/APItest", async (req, res) => {
-  let results = [];         
-  let company_details = []; 
+  let results = [];
+  let company_details = [];
   let completed = 0;
 
   symbols.forEach((symbol) => {
-      finhubClient.quote(symbol, (error, data, response) => {
+    finhubClient.quote(symbol, (error, data, response) => {
       if (!error) {
         results.push({ symbol, ...data });
       } else {
@@ -99,7 +107,6 @@ app.get("/APItest", async (req, res) => {
     }
   }
 });
-
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -175,13 +182,44 @@ app.get("/orderfetch", async (req, res) => {
   res.json(orderfetch);
 });
 
+async function sendOTP(req, email) {
+  try {
+    console.log("sendOTP");
+    const otp = crypto.randomBytes(3).toString("hex");
+    console.log(otp);
+    req.session.otp = otp;
+    req.session.email = email;
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "devdwuti@gmail.com",
+        pass: "fhwx ckgo qdqc kbvf",
+      },
+    });
+    await transporter.sendMail({
+      from: "devdwuti@gmail.com",
+      to: email,
+      subject: "Your OTP Code",
+      text: `Your OTP is ${otp}`,
+    });
+    console.log(`OTP sent to ${email}`);
+  } catch (err) {
+    console.error("Error sending OTP:", err);
+    throw err;
+  }
+}
+
 app.post("/signup", async (req, res) => {
   try {
     const existingUser = await account.findOne({ email: req.body.email });
     if (existingUser) {
       return res.json({ message: "User already exists" });
     }
-    let newuser = new account({
+    await sendOTP(req, req.body.email);
+    const { otp } = req.body; //input from user
+    console.log(req.session.otp,"session.otp");
+    if (otp === req.session.otp) { //fasle ho ja rha h 
+          let newuser = new account({
       name: req.body.name,
       mobile: req.body.mobile,
       email: req.body.email,
@@ -189,17 +227,16 @@ app.post("/signup", async (req, res) => {
     });
     await newuser.save();
     res.redirect("http://localhost:3001/dashboard");
+    } else {
+      res.status(400).json({ success: false, message: "Invalid OTP ❌" });
+    }
   } catch (err) {
     console.error(err);
     res.json({ error: "Something went wrong" });
   }
 });
 
-app.post("/getotp" ,async(req,res)=>{
-  let email = "devdwuti@gmail.com";
-  sendOTP(email);
-  res.json({ message: "OTP sent to email" });
-})
+app.post("/verifyotp")
 
 app.get("/market", async (req, res) => {});
 

@@ -71,7 +71,7 @@ code {
   gap: 50px
 } */
 
-/* * {
+* {
   border-style: solid;
   border-width: 1px;
   border-color: red;
@@ -79,4 +79,4 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-} */
+}

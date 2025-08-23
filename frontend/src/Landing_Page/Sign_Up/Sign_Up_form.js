@@ -1,83 +1,143 @@
 import React from "react";
 import woman from "../Media/women.png";
+import { useState } from "react";
 
 function Sign_Up_form() {
+  const [isbtncliked, Setisbtncliked] = useState(true);
+  async function handleSubmit(e) {
+    e.preventDefault(); 
+    console.log("Submitting signup form...");
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+
+    const res = await fetch("http://localhost:3002/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+    console.log(result);
+
+    Setisbtncliked(false);
+  }
   return (
-    <div>
-      <h1 className="d-flex justify-content-center mt-5 mb-2"> Sign up</h1>
-      <div className="row mb-5">
-        <div className="col m-5">
-          <img src={woman} className="ps-5 img-fluid"></img>
-        </div>
-        <form class="col-8 g-3 signupform px-5 mt-5" action={'http://localhost:3002/signup'} method='post'>
-            <div className="row">
-          <div class="col-md-6 col-sm-4 offset-1">
-            <label for="name" class="form-label" >
-              Full Name
-            </label>
-            <input type="text" class="form-control" id="name" placeholder="dev dwuti" name="name"></input>
+    
+    <>
+      <div>
+        <h1 className="d-flex justify-content-center mt-5 mb-2">Sign up</h1>
+        <div className="row mb-5">
+          <div className="col m-5">
+            <img src={woman} className="ps-5 img-fluid" />
           </div>
-          <div class="col-md-3 col-sm-1">
-            <label for="Mobile" class="form-label">
-              Mobile No.
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              id="mobile"
-              placeholder="+91"
-              name="mobile"
-            ></input>
-          </div>
-          <div class="col-md-9 offset-1">
-            <label for="email" class="form-label">
-             email
-            </label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              placeholder="a@b.com"
-              name="email"
-            ></input>
-          </div>
-          <div class="col-md-9 offset-1">
-            <label for="password" class="form-label">
-              password
-            </label>
-            <input
-              type="password"
-              class="form-control"
-              id="inputAddress2"
-              placeholder="must contain @,#,number"
-              name="password"
-            ></input>
-          </div>
-          {/* <div class="col-md-7 offset-1">
-            <label for="inputCity" class="form-label">
-              City
-            </label>
-            <input type="text" class="form-control" id="inputCity"></input>
-          </div>
-          <div class="col-md-2">
-            <label for="inputZip" class="form-label">
-              Zip
-            </label>
-            <input type="text" class="form-control" id="inputZip"></input>
-          </div> */}
-          <div class="row-6">
-            <button
-              type="submit"
-              class="btn btn-primary col-4 offset-4 px-3 rounded-pill mt-5"
+
+          {isbtncliked ? (
+            <form
+              className="col-8 g-3 signupform px-5 mt-5"
+              onSubmit={handleSubmit}
             >
-              Sign in
-            </button>
-          </div>
-          </div>
-        </form>
+              <div className="row">
+                <div className="col-md-6 col-sm-4 offset-1">
+                  <label htmlFor="name" className="form-label">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    placeholder="dev dwuti"
+                    name="name"
+                  />
+                </div>
+
+                <div className="col-md-3 col-sm-1">
+                  <label htmlFor="mobile" className="form-label">
+                    Mobile No.
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="mobile"
+                    placeholder="+91"
+                    name="mobile"
+                  />
+                </div>
+
+                <div className="col-md-9 offset-1">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="a@b.com"
+                    name="email"
+                  />
+                </div>
+
+                <div className="col-md-9 offset-1">
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    placeholder="must contain @,#,number"
+                    name="password"
+                  />
+                </div>
+
+                <div className="row-6">
+                  <button
+                    type="submit"
+                    className="btn btn-primary col-4 offset-4 px-3 rounded-pill mt-5"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              </div>
+            </form>
+          ) : (
+            <form
+              className="col-8 g-3 signupform px-5 mt-5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log("OTP submitted");
+              }}
+            >
+              <div className="col-6 offset-3">
+                <label htmlFor="otp" className="form-label">
+                  Otp
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="otp"
+                  placeholder="Otp"
+                  name="otp"
+                />
+              </div>
+
+              <div className="row">
+                <button
+                  type="submit"
+                  className="btn btn-primary col-4 offset-4 px-3 rounded-pill mt-5"
+                >
+                  Enter
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
+
+
 
 export default Sign_Up_form;
