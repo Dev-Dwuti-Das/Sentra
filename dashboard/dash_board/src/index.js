@@ -9,6 +9,7 @@ import Positionswrap from "./Ui/positions/positionswrap";
 import Navbarwrap from "./Navbarwrap";
 import Fav_left from "./Ui/fav";
 import Marketwrap from "./Ui/market/market";
+import Marketnews from "./Ui/home/marketnews";
 
 
 const router = createBrowserRouter([
@@ -38,8 +39,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    
+    
+    
     <Navbarwrap></Navbarwrap>
+    <Marketnews></Marketnews>
     <div className="row mx-2">
+      
       <div className="col-3  widget me-3">
         <Fav_left></Fav_left>
       </div>

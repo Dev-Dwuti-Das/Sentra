@@ -10,6 +10,7 @@ import Princingwrap from "./Landing_Page/Pricing/Pricing_wrap";
 import Supportwrap from "./Landing_Page/Support/Hero";
 import "./Landing_Page/home/home.css"
 import "../src/index.css"
+import {Marketnews} from "../../dashboard/dash_Board/src/Ui/home/marketnews";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Navbar></Navbar>
+    <h1>sc</h1>
+    <Marketnews></Marketnews>
     <RouterProvider router={router} />
     <Footer></Footer>
   </React.StrictMode>

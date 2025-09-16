@@ -18,7 +18,9 @@ const finhub = require("finnhub");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const send = require("process");
-const finhubClient = new finhub.DefaultApi(process.env.FINHUB_API_kEY);
+const { summary } = require("framer-motion/client");
+const finhubClient_brave = new finhub.DefaultApi(process.env.FINHUB_API_kEY_BRAVE);
+const finhubClient_chrome = new finhub.DefaultApi(process.env.FINHUB_API_kEY_CHROME);
 
 app.use(session({
   secret: "secret_key",
@@ -57,31 +59,16 @@ const symbols = [
   "V",
   "MA",
   "DIS",
-  "NFLX",
-  "ADBE",
-  "INTC",
-  "AMD",
-  "CSCO",
-  "ORCL",
-  "PYPL",
-  "CRM",
-  "IBM",
-  "PEP",
-  "KO",
-  "MCD",
-  "SBUX",
-  "WMT",
-  "XOM",
-  "PFE",
+
 ];
 
-app.get("/APItest", async (req, res) => {
+app.get("/Market", async (req, res) => {
   let results = [];
   let company_details = [];
   let completed = 0;
 
   symbols.forEach((symbol) => {
-    finhubClient.quote(symbol, (error, data, response) => {
+    finhubClient_brave.quote(symbol, (error, data, response) => {
       if (!error) {
         results.push({ symbol, ...data });
       } else {
@@ -90,7 +77,7 @@ app.get("/APItest", async (req, res) => {
       checkIfDone();
     });
 
-    finhubClient.companyProfile2({ symbol }, (error, data, response) => {
+    finhubClient_brave.companyProfile2({ symbol }, (error, data, response) => {
       if (!error) {
         company_details.push({ symbol, ...data });
       } else {
@@ -106,10 +93,6 @@ app.get("/APItest", async (req, res) => {
       res.json({ quotes: results, profiles: company_details });
     }
   }
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
 });
 
 app.get("/holdingfetch", async (req, res) => {
@@ -182,18 +165,52 @@ app.get("/orderfetch", async (req, res) => {
   res.json(orderfetch);
 });
 
+app.get("/marketnews",async(req,res)=>{
+  let results = [];
+  let company_details = [];
+  let completed = 0;
+
+  symbols.forEach((symbol) => {
+    finhubClient_chrome.quote(symbol, (error, data, response) => {
+      if (!error) {
+        results.push({ symbol, ...data });
+      } else {
+        console.log("Error fetching quote for", symbol, error);
+      }
+      checkIfDone();
+    });
+
+    finhubClient_chrome.companyProfile2({ symbol }, (error, data, response) => {
+      if (!error) {
+        company_details.push({ symbol, ...data });
+      } else {
+        console.log("Error fetching profile for", symbol, error);
+      }
+      checkIfDone();
+    });
+  });
+
+  function checkIfDone() {
+    completed++;
+    if (completed === symbols.length * 2) {
+      res.json({ quotes: results, profiles: company_details });
+    }
+  }
+}); 
+
+
 async function sendOTP(req, email) {
   try {
     console.log("sendOTP");
     const otp = crypto.randomBytes(3).toString("hex");
     console.log(otp);
-    req.session.otp = otp;
+    req.session.otp = { code: otp, expiresAt: Date.now() + 60*5*1000 };
     req.session.email = email;
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: "devdwuti@gmail.com",
-        pass: "fhwx ckgo qdqc kbvf",
+        pass: "rnjb yqqx fjsm uxbb",
       },
     });
     await transporter.sendMail({
@@ -213,21 +230,21 @@ app.post("/signup", async (req, res) => {
   try {
     const existingUser = await account.findOne({ email: req.body.email });
     if (existingUser) {
-      return res.json({ message: "User already exists" });
+      return res.json({success: true, message: "User already exists" });
     }
     await sendOTP(req, req.body.email);
     res.json({ success: true, message: "OTP sent to email" });
   } catch (err) {
     console.error(err);
-    res.json({ error: "Something went wrong" });
+    res.json({success: false, error: "Something went wrong" });
   }
 });
 
 app.post("/verifyotp", async(req,res)=>{
   console.log("verifying....")
   const { otp } = req.body; //input from user
-  console.log(req.session.otp);
-   if (otp === req.session.otp) { //fasle ho ja rha h 
+  console.log(req.session.otp); //undefined h yeah !
+   if (req.session.otp && otp === req.session.otp.code) { //fasle ho ja rha h 
           let newuser = new account({
       name: req.body.name,
       mobile: req.body.mobile,
@@ -235,7 +252,7 @@ app.post("/verifyotp", async(req,res)=>{
       password: await bcrypt.hash(req.body.password, 5),
     });
     await newuser.save();
-    res.redirect("http://localhost:3001/dashboard");
+    res.json({ success: true, redirectUrl: "http://localhost:3001/dashboard" });
     } else {
       res.status(400).json({ success: false, message: "Invalid OTP ❌" });
     }
@@ -298,44 +315,6 @@ app.post("/neworders", async (req, res) => {
   }
 });
 
-// app.get("/tempdatapos", async (req, res) => {
-//   tempholding = [
-//     {
-//       product: "CNC",
-//       name: "EVEREADY",
-//       qty: 2,
-//       avg: 316.27,
-//       price: 312.35,
-//       net: "+0.58%",
-//       day: "-1.24%",
-//       isLoss: true,
-//     },
-//     {
-//       product: "CNC",
-//       name: "JUBLFOOD",
-//       qty: 1,
-//       avg: 3124.75,
-//       price: 3082.65,
-//       net: "+10.04%",
-//       day: "-1.35%",
-//       isLoss: true,
-//     },
-//   ];
-//   tempholding.forEach((element) => {
-//     let data = new position({
-//       product: element.product,
-//       name: element.name,
-//       qty: element.qty,
-//       avg: element.avg,
-//       price: element.price,
-//       net: element.net,
-//       day: element.day,
-//       isLoss: element.isLoss,
-//     });
-//     data.save();
-//   });
-//   res.send("done !");
-// });
 app.listen(Port, () => {
   console.log(`Example app listening on port ${Port}`);
   mongoose.connect(URL);

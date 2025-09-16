@@ -25,7 +25,7 @@ function navbar() {
           <div class="collapse navbar-collapse justify-content-center mb-2 mt-1" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active text-white  mx-4" aria-current="page" href="http://localhost:3000/dashboard">
+                <a class="nav-link active text-white  mx-4" aria-current="page" href="http://localhost:3001/dashboard">
                   Dashboard
                 </a>
               </li>
@@ -35,17 +35,17 @@ function navbar() {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white mx-4" href="http://localhost:3000/order">
+                <a class="nav-link text-white mx-4" href="http://localhost:3001/order">
                   Orders
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white  mx-4" href="http://localhost:3000/holding">
+                <a class="nav-link text-white  mx-4" href="http://localhost:3001/holding">
                   Holding
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white  mx-4" href="http://localhost:3000/position">
+                <a class="nav-link text-white  mx-4" href="http://localhost:3001/position">
                   positions
                 </a>
               </li>

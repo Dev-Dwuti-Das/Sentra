@@ -1,56 +1,55 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: aliceblue;
-  background-color: rgb(13,13,13);
+  background-color: rgb(13, 13, 13);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-.widget{
+.widget {
   background-color: rgb(23, 23, 23);
   padding: 20px;
   padding-bottom: 31px;
   border-radius: 25px;
 }
 
-.profit{
-  color:rgb(92, 211, 92)
+.profit {
+  color: rgb(92, 211, 92);
 }
-.loss{
+.loss {
   color: rgb(255, 95, 95);
 }
 .neutral {
   color: gray;
 }
 
-.fav-button{
+.fav-button {
   font-size: small;
-  color:white;
+  color: white;
   font-weight: 600;
   background-color: rgb(41, 41, 41);
 }
-
 
 .clickfav {
   padding: 0.1rem; /* give hover space */
   cursor: pointer;
 }
 
-.buybtn{
+.buybtn {
   background-color: rgb(92, 211, 92);
   border-radius: 25px;
   color: rgb(0, 0, 0);
 }
 
-.sellbtn{
+.sellbtn {
   background-color: rgb(255, 95, 95);
   border-radius: 25px;
   color: rgb(0, 0, 0);
@@ -61,17 +60,93 @@ code {
   background-color: rgb(41, 41, 41);
   color: white; /* so text stays readable */
 }
+
+.widget {
+  background-color: rgb(23, 23, 23);
+  padding: 20px;
+  padding-bottom: 31px;
+  border-radius: 25px;
+}
+
 /* .clicked{
   background-color: aqua;
 } */
-
 
 /* .chart-container {
   display: flex;
   gap: 50px
 } */
 
-* {
+.fav {
+  background-color: rgb(23, 23, 23);
+  padding: 20px;
+  border-radius: 25px;
+}
+.stockticker {
+  padding: 0px;
+  border-block: 0px solid;
+  block-size: auto;
+  align-items: center;
+  /* display: flex; */
+  overflow: hidden;
+  user-select: none;
+  gap: 2rem;
+  -webkit-mask: linear-gradient(
+    90deg,
+    transparent,
+    white 10%,
+    white 90%,
+    transparent
+  );
+}
+/* .stickerdiv{
+  border-style: solid;
+  border-width: 1px;
+  border-color: aliceblue;
+  display: flex;
+  justify-content: center;
+
+} */
+
+.stockticker ul {
+  padding: 0px;
+  list-style: none;
+  flex-shrink: 0;
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  animation: scroll 100s linear infinite;
+}
+@keyframes scroll {
+  to {
+    transform: translate(-100%);
+  }
+}
+.stockticker li{
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: center;
+  gap:0.5rem
+}
+
+.stockticker .stickername,
+.stockticker .stickerprice{
+  font-weight: 500;
+}
+
+.stockticker .stickerprice{
+  margin-inline: 0px;
+
+}
+.stockticker:hover ul {
+  animation-play-state: paused;
+}
+
+/* * {
   border-style: solid;
   border-width: 1px;
   border-color: red;
@@ -79,4 +154,4 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */

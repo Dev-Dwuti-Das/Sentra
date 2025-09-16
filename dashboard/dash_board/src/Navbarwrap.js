@@ -18,6 +18,7 @@ function Navbarwrap() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) setUser(data);
+        console.log(data);
       })
       .catch((err) => console.error(err));
   }, []);

@@ -18,13 +18,14 @@ function Marketwrap() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3002/APItest")
+      .get("http://localhost:3002/Market")
       .then((res) => {
         const merged = res.data.quotes.map((q) => {
           const profile = res.data.profiles.find((p) => p.symbol === q.symbol);
           return { ...q, ...profile };
         });
         setMarket(merged);
+        console.log("market data fetch")
       })
       .catch((err) => console.error(err));
   }, []);
