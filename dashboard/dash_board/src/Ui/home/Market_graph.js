@@ -23,24 +23,24 @@ ChartJS.register(
 
 function Market_Graph() {
   const stockData = {
-    "19:00:00": {
+    "7PM": {
       "1. open": "257.5200",
       "4. close": "357.2200",
       "5. volume": "570.695",
     },
-    "18:00:00": {
+    "6PM": {
       "1. open": "257.2200",
       "4. close": "437.0100",
       "5. volume": "571.085",
     },
-    "17:00:00": {
+    "5PM": {
       "1. open": "257.2000",
       "4. close": "390.2400",
       "5. volume": "797",
     },
-    "16:00:00": {
+    "4PM": {
       "1. open": "357.5900",
-      "4. close": "257.4800",
+      "4. close": "857.4800",
       "5. volume": "181.2398",
     },
   };
@@ -67,18 +67,21 @@ function Market_Graph() {
     datasets: [
       {
         label: "Open Price",
+        borderWidth: 5,
         data: Object.values(stockData).map((d) => Number(d["1. open"])),
         borderColor: "rgb(243, 88, 101)", // red
         backgroundColor: "rgba(243, 88, 101, 0.5)",
       },
       {
         label: "Close Price",
+        borderWidth: 5,
         data: Object.values(stockData).map((d) => Number(d["4. close"])),
         borderColor: "rgb(73, 90, 251)", // blue
         backgroundColor: "rgba(73, 90, 251, 0.5)",
       },
       {
         label: "Volume",
+        borderWidth: 5,
         data: Object.values(stockData).map((d) => Number(d["5. volume"])),
         borderColor: "rgba(169, 207, 16, 1)", // green
         backgroundColor: "rgba(169, 207, 16, 0.5)",
@@ -87,8 +90,8 @@ function Market_Graph() {
   };
 
   return (
-    <div className="widget mt-2 pt-5">
-        <h1>market graph</h1>
+    <div className="widget mt-2 p-3">
+        <h4>Market</h4>
       <Line options={options} data={data_line} />
     </div>
   );
