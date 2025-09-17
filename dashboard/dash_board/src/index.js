@@ -39,13 +39,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    
-    
-    
     <Navbarwrap></Navbarwrap>
     <Marketnews></Marketnews>
     <div className="row mx-2">
-      
       <div className="col-3  widget me-3">
         <Fav_left></Fav_left>
       </div>

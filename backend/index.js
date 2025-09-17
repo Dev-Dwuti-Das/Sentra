@@ -16,9 +16,9 @@ const cookieParser = require("cookie-parser");
 const bodyparser = require("body-parser");
 const finhub = require("finnhub");
 const crypto = require("crypto");
+const axios = require("axios");
 const nodemailer = require("nodemailer");
-const send = require("process");
-const { summary } = require("framer-motion/client");
+
 const finhubClient_brave = new finhub.DefaultApi(process.env.FINHUB_API_kEY_BRAVE);
 const finhubClient_chrome = new finhub.DefaultApi(process.env.FINHUB_API_kEY_CHROME);
 
@@ -99,6 +99,19 @@ app.get("/holdingfetch", async (req, res) => {
   let holdingfetch = await holding.find({});
   res.json(holdingfetch);
 });
+
+app.get("/Market_graph",async(req,res) => {
+  try {
+    console.log("API KEY:", process.env.ALPHA_VANTAGE);
+    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=60min&apikey=${process.env.ALPHA_VANTAGE}`;
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (err) {
+    console.error("Error fetching data:", err.message);
+    res.status(500).json({ error: "Failed to fetch data" });
+    console.log("API KEY:", process.env.ALPHA_VANTAGE);
+  }
+})
 
 app.post("/sellstock", async (req, res) => {
   console.log("route hit ");

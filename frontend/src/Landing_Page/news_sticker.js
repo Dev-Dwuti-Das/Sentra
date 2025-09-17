@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Marketnews() {
+export default function Marketnews_front() {
   const [news, setnews] = useState([]);
   useEffect(() => {
     axios

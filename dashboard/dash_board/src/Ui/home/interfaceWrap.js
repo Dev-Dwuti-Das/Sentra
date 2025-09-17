@@ -6,6 +6,8 @@ import Commodity from "./Commodity";
 import Holding_graph from "./holding_graph";
 import { react, useState, useEffect } from "react";
 import axios from "axios";
+import Market_Graph from "./Market_graph";
+
 
 function Interfacewrap() {
   const [Holding, setHolding] = useState([]);
@@ -21,17 +23,16 @@ function Interfacewrap() {
       setHolding(res.data);
     });
   }, []);
+
   const options = {
     layout: {
       padding: {
         top: 0,
-        right: 0, // 👈 add spacing between chart and legend
+        right: 0, 
         bottom: 0,
         left: 0,
       },
-      // padding: {
-      //   middle: 100, // 👈 adds 30px space between chart and legend
-      // },
+
     },
     plugins: {
       legend: {
@@ -50,7 +51,7 @@ function Interfacewrap() {
       },
     },
   };
-  const data = {
+  const data_doughnut= {
     labels: Holding.map((e) => e.name),
     datasets: [
       {
@@ -93,6 +94,22 @@ function Interfacewrap() {
       },
     ],
   };
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const data_bar= {
+  labels,
+  datasets: [
+  {
+    label: 'Dataset 1',
+    data: [120, 340, 560, 220, 430, 800, 670, 510, 720, 390],
+    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+  },
+  {
+    label: 'Dataset 2',
+    data: [200, 450, 300, 780, 600, 910, 400, 250, 580, 770],
+    backgroundColor: 'rgba(53, 162, 235, 0.5)',
+  },
+  ]
+};
   return (
     <>
       <div className="row">
@@ -109,11 +126,16 @@ function Interfacewrap() {
       <div className="row">
         <div className={`col ${child_btn_click ? "col-3" : "col-3"}`}>
           <Holding_graph
-            data={data}
+            data={data_doughnut}
             options={options}
             onbtn_click={handle_child_btn}
           ></Holding_graph>
         </div>
+        <div className="col">
+          <Market_Graph>
+            
+          </Market_Graph>
+          </div>
         <div className="col">lund</div>
       </div>
     </>

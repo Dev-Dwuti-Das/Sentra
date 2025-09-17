@@ -19,7 +19,6 @@ export default function DoughnutChart({ data, options,onbtn_click}){
       <h4 className="">
         Holding
       </h4>
-
       <div className="position-relative d-flex justify-content-center align-items-center">
         <Doughnut data={data} options={options} />
         <div
