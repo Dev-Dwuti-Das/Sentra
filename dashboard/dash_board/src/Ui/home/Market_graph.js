@@ -1,4 +1,6 @@
 import React from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@mui/material/InputAdornment";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +12,9 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useState, useEffect } from "react";
+import { symbol } from "framer-motion/client";
+const axios = require("axios");
 
 ChartJS.register(
   CategoryScale,
@@ -22,76 +27,151 @@ ChartJS.register(
 );
 
 function Market_Graph() {
-  const stockData = {
-    "7PM": {
-      "1. open": "257.5200",
-      "4. close": "357.2200",
-      "5. volume": "570.695",
-    },
-    "6PM": {
-      "1. open": "257.2200",
-      "4. close": "437.0100",
-      "5. volume": "571.085",
-    },
-    "5PM": {
-      "1. open": "257.2000",
-      "4. close": "390.2400",
-      "5. volume": "797",
-    },
-    "4PM": {
-      "1. open": "357.5900",
-      "4. close": "857.4800",
-      "5. volume": "181.2398",
-    },
+  const [Marketgraph, setMarketgraph] = useState([]);
+  const [stockCode, setStockCode] = useState("");
+
+  const fetchData = async (symbol) => {
+    axios
+      .get(`http://localhost:3002/Market_graph?symbol=${symbol}`)
+      .then((res) => {
+        const timeSeries = res.data["Time Series (Daily)"];
+        console.log(timeSeries);
+        setMarketgraph(timeSeries);
+      });
   };
+  useEffect(() => {
+    fetchData(stockCode);
+  }, []);
+
+  function handle_search() {
+    fetchData(stockCode);
+  }
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
+        labels: {
+          usePointStyle: true,
+          pointStyle: "circle",
+          padding: 7,
+          boxWidth: 9,
+          boxHeight: 9,
+          color: "white",
+          font: {
+            size: 14,
+          },
+        },
         display: true,
         position: "bottom",
       },
-      title: {
+    },
+    scales: {
+      x: {
         display: false,
-        text: "Stock Prices",
+      },
+      y: {
+        display: false,
+      },
+      y1: {
+        type: "linear", // right y-axis for volume
+        grid: { drawOnChartArea: false }, // don’t overlap grids
       },
     },
   };
 
-  // Use stockData keys as labels (timestamps)
-  const labels = Object.keys(stockData);
-
+  const allDates = Object.keys(Marketgraph).reverse().slice(-50);
+  const labels = allDates.map((date) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${month}-${day}`;
+  });
   const data_line = {
     labels,
     datasets: [
       {
-        label: "Open Price",
-        borderWidth: 5,
-        data: Object.values(stockData).map((d) => Number(d["1. open"])),
-        borderColor: "rgb(243, 88, 101)", // red
-        backgroundColor: "rgba(243, 88, 101, 0.5)",
+        label: "OPEN",
+        borderWidth: 4,
+        pointRadius: 0,
+        tension: 0.3,
+        data: Object.values(Marketgraph).map((d) => Number(d["1. open"])),
+        borderColor: "rgb(243, 88, 101)",
+        backgroundColor: "rgb(243, 88, 101)",
       },
       {
-        label: "Close Price",
-        borderWidth: 5,
-        data: Object.values(stockData).map((d) => Number(d["4. close"])),
-        borderColor: "rgb(73, 90, 251)", // blue
-        backgroundColor: "rgba(73, 90, 251, 0.5)",
+        label: "CLOSE",
+        borderWidth: 4,
+        pointRadius: 0,
+        tension: 0.3,
+        data: Object.values(Marketgraph).map((d) => Number(d["4. close"])),
+        borderColor: "rgb(73, 90, 251)",
+        backgroundColor: "rgb(73, 90, 251)",
       },
       {
-        label: "Volume",
-        borderWidth: 5,
-        data: Object.values(stockData).map((d) => Number(d["5. volume"])),
-        borderColor: "rgba(169, 207, 16, 1)", // green
-        backgroundColor: "rgba(169, 207, 16, 0.5)",
+        label: "VOL",
+        borderWidth: 4,
+        pointRadius: 0,
+        tension: 0.3,
+        data: Object.values(Marketgraph).map((d) => Number(d["5. volume"])),
+        borderColor: "rgba(169, 207, 16, 1)",
+        backgroundColor: "rgba(169, 207, 16, 1)",
+        yAxisID: "y1",
+      },
+      {
+        label: "HIGH",
+        borderWidth: 4,
+        pointRadius: 0,
+        tension: 0.3,
+        data: Object.values(Marketgraph).map((d) => Number(d["2. high"])),
+        borderColor: "rgba(255, 193, 7, 1)",
+        backgroundColor: "rgba(255, 193, 7, 0.5)",
+      },
+      {
+        label: "LOW",
+        borderWidth: 4,
+        pointRadius: 0,
+        tension: 0.3,
+        data: Object.values(Marketgraph).map((d) => Number(d["3. low"])),
+        borderColor: "rgba(0, 200, 83, 1)",
+        backgroundColor: "rgba(0, 200, 83, 0.5)",
       },
     ],
   };
 
   return (
-    <div className="widget mt-2 p-3">
-        <h4>Market</h4>
+    <div className="widget mt-2 p-3 pb-1">
+      <div className="row">
+        <div className="col">
+          <h4>Market</h4>
+        </div>
+        <div className="col-4">
+          <div className="row">
+            <div className="col-8">
+              <input
+                className="form-control bg-dark m-0 border-0 rounded-pill px-4 text-white"
+                placeholder="Search..."
+                name="Stock_code"
+                onChange={(e) => setStockCode(e.target.value)}
+              />
+            </div>
+            <div className="col-4">
+              <button
+                className="btn btn-primary m-0 d-flex align-items-center justify-content-center"
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  borderRadius: "50%",
+                  padding: "0",
+                }}
+                onClick={handle_search}
+              >
+                <SearchIcon />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <Line options={options} data={data_line} />
     </div>
   );

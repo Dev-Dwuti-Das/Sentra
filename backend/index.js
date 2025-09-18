@@ -100,18 +100,17 @@ app.get("/holdingfetch", async (req, res) => {
   res.json(holdingfetch);
 });
 
-app.get("/Market_graph",async(req,res) => {
+app.get("/Market_graph", async (req, res) => {
   try {
-    console.log("API KEY:", process.env.ALPHA_VANTAGE);
-    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=60min&apikey=${process.env.ALPHA_VANTAGE}`;
+    const Stock_code = req.query.symbol || "IBM"; // default to IBM if none provided
+    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${Stock_code}&outputsize=compact&apikey=${process.env.ALPHA_VANTAGE}`;
     const response = await axios.get(url);
     res.json(response.data);
   } catch (err) {
     console.error("Error fetching data:", err.message);
     res.status(500).json({ error: "Failed to fetch data" });
-    console.log("API KEY:", process.env.ALPHA_VANTAGE);
   }
-})
+});
 
 app.post("/sellstock", async (req, res) => {
   console.log("route hit ");

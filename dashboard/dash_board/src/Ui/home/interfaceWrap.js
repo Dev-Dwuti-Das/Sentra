@@ -124,7 +124,7 @@ function Interfacewrap() {
         </div>
       </div>
       <div className="row">
-        <div className={`col ${child_btn_click ? "col-4" : "col-3"}`}>
+        <div className={`col ${child_btn_click ? "col-3" : "col-3"}`}>
           <Holding_graph
             data={data_doughnut}
             options={options}
@@ -137,6 +137,11 @@ function Interfacewrap() {
           </Market_Graph>
           </div>
         <div className="col">lund</div>
+      </div>
+      <div className="row">
+        {/* <Market_Graph>
+            
+        </Market_Graph> */}
       </div>
     </>
   );
