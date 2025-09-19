@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { watchlist } from "./data/data.js";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Favleft() {
   const [hoveredId, setHoveredId] = useState(null);
-  const [buyingStockId, setBuyingStockId] = useState(null); 
+  const [buyingStockId, setBuyingStockId] = useState(null);
   const [sellingStockId, setSellingStockId] = useState(null);
 
   function handle_mouse_enter(id) {
@@ -16,33 +17,44 @@ function Favleft() {
 
   function handle_buy(id) {
     setBuyingStockId(id);
-    setSellingStockId(null); 
+    setSellingStockId(null);
   }
 
   function handle_close_buy() {
     setBuyingStockId(null);
   }
 
-  function handle_sell(id){
+  function handle_sell(id) {
     setSellingStockId(id);
     setBuyingStockId(null);
   }
 
-  function handle_sell_close(id){
+  function handle_sell_close(id) {
     setSellingStockId(null);
   }
 
   return (
     <div className="fav position-relative">
-      <div className="mb-3">
-        <label htmlFor="search" className="mb-1 fw-semibold ms-3 fs-4">
+      <label htmlFor="search" className="mb-1 fw-semibold ms-3 fs-4">
           Search
         </label>
+      <div className="d-flex mb-3">
         <input
-          className="form-control fav_input bg-dark border-0 rounded-pill px-4 text-white"
+          className="form-control fav_input bg-dark me-1 border-0 rounded-pill px-4 text-white "
           placeholder="Search..."
           name="search"
         />
+        <button
+                className="btn fav-button d-flex align-items-center justify-content-center"
+                style={{
+                  width: "40px",
+                  height: "35px",
+                  borderRadius: "50%",
+                  padding: "0",
+                }}
+              >
+                <SearchIcon />
+              </button>
       </div>
 
       <div className="clicked">
@@ -68,7 +80,11 @@ function Favleft() {
             </div>
 
             {hoveredId === ele.name && (
-              <FavAction uid={ele.name} onBuy={handle_buy} onsell={handle_sell} />
+              <FavAction
+                uid={ele.name}
+                onBuy={handle_buy}
+                onsell={handle_sell}
+              />
             )}
           </div>
         ))}
@@ -80,30 +96,39 @@ function Favleft() {
       )}
 
       {sellingStockId && (
-        <SellWindow stockId={sellingStockId} onClose={handle_sell_close}/>
-        )}
+        <SellWindow stockId={sellingStockId} onClose={handle_sell_close} />
+      )}
     </div>
   );
 }
 export default Favleft;
 
-
-const FavAction = ({ uid, onBuy, onsell}) => {
+const FavAction = ({ uid, onBuy, onsell }) => {
   return (
     <div className="row mb-2 mt-2 offset-1">
-  <div className="col-2 mx-1">
-    <button className="btn px-3 rounded-pill fav-button" onClick={() =>onBuy(uid)}>Buy</button>
-  </div>
-  <div className="col-2 mx-1">
-    <button className="btn px-3 rounded-pill fav-button" onClick={() =>onsell(uid)}>Sell</button>
-  </div>
-  <div className="col-2 mx-1">
-    <button className="btn px-3 rounded-pill fav-button">Sell</button>
-  </div>
-  <div className="col-2 mx-1">
-    <button className="btn px-3 rounded-pill fav-button">Sell</button>
-  </div>
-</div>
+      <div className="col-2 mx-1">
+        <button
+          className="btn px-3 rounded-pill fav-button"
+          onClick={() => onBuy(uid)}
+        >
+          Buy
+        </button>
+      </div>
+      <div className="col-2 mx-1">
+        <button
+          className="btn px-3 rounded-pill fav-button"
+          onClick={() => onsell(uid)}
+        >
+          Sell
+        </button>
+      </div>
+      <div className="col-2 mx-1">
+        <button className="btn px-3 rounded-pill fav-button">Sell</button>
+      </div>
+      <div className="col-2 mx-1">
+        <button className="btn px-3 rounded-pill fav-button">Sell</button>
+      </div>
+    </div>
   );
 };
 
@@ -113,11 +138,14 @@ const BuyWindow = ({ stockId, onClose }) => {
       <hr></hr>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5>Buy {stockId}</h5>
-        <button className="btn btn-sm px-1 m-0 bg-dark text-white rounded-pill" onClick={onClose}>
+        <button
+          className="btn btn-sm px-1 m-0 bg-dark text-white rounded-pill"
+          onClick={onClose}
+        >
           X
         </button>
       </div>
-      <form method="post" action='http://localhost:3002/neworders'>
+      <form method="post" action="http://localhost:3002/neworders">
         <input type="hidden" name="name" value={stockId} />
         <div className="row">
           <div className="col">
@@ -157,11 +185,14 @@ const SellWindow = ({ stockId, onClose }) => {
       <hr></hr>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5>Sell {stockId}</h5>
-        <button className="btn btn-sm p-1 m-0 bg-dark text-white rounded-pill" onClick={onClose}>
+        <button
+          className="btn btn-sm p-1 m-0 bg-dark text-white rounded-pill"
+          onClick={onClose}
+        >
           X
         </button>
       </div>
-      <form method="post" action='http://localhost:3002/sellstock'>
+      <form method="post" action="http://localhost:3002/sellstock">
         <input type="hidden" name="name" value={stockId} />
         <div className="row">
           <div className="col">
@@ -188,7 +219,7 @@ const SellWindow = ({ stockId, onClose }) => {
           </div>
         </div>
         <button className="btn btn-danger  bg-dark rounded-pill w-100">
-          Confirm sell 
+          Confirm sell
         </button>
       </form>
     </>

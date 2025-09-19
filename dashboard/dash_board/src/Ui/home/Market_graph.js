@@ -147,7 +147,7 @@ function Market_Graph() {
         </div>
         <div className="col-4">
           <div className="row">
-            <div className="col-8">
+            <div className="col-8 p-0">
               <input
                 className="form-control bg-dark m-0 border-0 rounded-pill px-4 text-white"
                 placeholder="Search..."
@@ -155,9 +155,9 @@ function Market_Graph() {
                 onChange={(e) => setStockCode(e.target.value)}
               />
             </div>
-            <div className="col-4">
+            <div className="col-4 p-0">
               <button
-                className="btn btn-primary m-0 d-flex align-items-center justify-content-center"
+                className="btn fav-button ms-1 d-flex align-items-center justify-content-center"
                 style={{
                   width: "35px",
                   height: "35px",

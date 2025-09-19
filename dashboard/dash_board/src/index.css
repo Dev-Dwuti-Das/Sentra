@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: aliceblue;
-  background-color: rgb(13, 13, 13);
+  background-color:   rgb(13, 13, 13);
 }
 
 code {
@@ -79,7 +79,7 @@ code {
 
 .fav {
   background-color: rgb(23, 23, 23);
-  padding: 20px;
+  padding: 0px;
   border-radius: 25px;
 }
 .stockticker {
